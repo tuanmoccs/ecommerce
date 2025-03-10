@@ -63,19 +63,19 @@
                     <p>{{$product->content}}</p>
                     <form action="/add-cart" method="post">
                         @if($product->active != 0)
-                    <div class="product_count">
-                        <label for="qty">Số lượng:</label>
-                        <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
-                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
-                                class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
-                                class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
-                    </div>
-                    <div class="card_area d-flex align-items-center">
-                        <button style = "border:none" type = "submit" class="primary-btn" href="#">Add to Cart</button>
-                    </div>
-                        <input type = "hidden" name="product_id" value="{{$product->id}}">
-                        @csrf
+                            <div class="product_count">
+                                <label for="qty">Số lượng:</label>
+                                <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
+                                <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                                        class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
+                                <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+                                        class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
+                            </div>
+                            <div class="card_area d-flex align-items-center">
+                                <button style = "border:none" type = "submit" class="primary-btn" href="#">Add to Cart</button>
+                            </div>
+                            <input type = "hidden" name="product_id" value="{{$product->id}}">
+                            @csrf
                         @endif
                     </form>
                 </div>
@@ -106,79 +106,39 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="comment_list">
+                            @if($reviews -> isEmpty())
+                                <p>Chưa có bình luận nào</p>
+                            @else
+                            @foreach($reviews as $review)
                             <div class="review_item">
                                 <div class="media">
                                     <div class="d-flex">
                                         <img src="img/product/review-1.png" alt="">
                                     </div>
                                     <div class="media-body">
-                                        <h4>Blake Ruiz</h4>
-                                        <h5>12th Feb, 2018 at 05:56 pm</h5>
-                                        <a class="reply_btn" href="#">Reply</a>
+                                        <h4>{{$review->user->name}} </h4>
+                                        <h5>{{$review->created_at}}</h5>
                                     </div>
                                 </div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                                    commodo</p>
+                                <p>{{$review->comment}}</p>
                             </div>
-                            <div class="review_item reply">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="img/product/review-2.png" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <h4>Blake Ruiz</h4>
-                                        <h5>12th Feb, 2018 at 05:56 pm</h5>
-                                        <a class="reply_btn" href="#">Reply</a>
-                                    </div>
-                                </div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                                    commodo</p>
-                            </div>
-                            <div class="review_item">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="img/product/review-3.png" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <h4>Blake Ruiz</h4>
-                                        <h5>12th Feb, 2018 at 05:56 pm</h5>
-                                        <a class="reply_btn" href="#">Reply</a>
-                                    </div>
-                                </div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                                    commodo</p>
-                            </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="review_box">
-                            <h4>Post a comment</h4>
-                            <form class="row contact_form" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
+                            <h4>Bình luận</h4>
+                            <form class="row contact_form" action="{{ route('review.store', ['product' => $product->id]) }}" method="post" id="contactForm" novalidate="novalidate">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{$product->id}}">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Your Full name">
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email Address">
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="number" name="number" placeholder="Phone Number">
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <textarea class="form-control" name="message" id="message" rows="1" placeholder="Message"></textarea>
+                                        <textarea class="form-control" name="comment" id="message" rows="1" placeholder="Nhập bình luận"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-12 text-right">
-                                    <button type="submit" value="submit" class="btn primary-btn">Submit Now</button>
+                                    <button type="submit" value="submit" class="btn primary-btn">Gửi</button>
                                 </div>
                             </form>
                         </div>
@@ -205,22 +165,22 @@
             <div class="col-lg-9">
                 <div class="row">
                     @foreach($productMore as $products)
-                    <div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-                        <div class="single-related-product d-flex">
-                            @php
-                                $thumbs = explode(',', $products->thumb); // Lấy danh sách ảnh
-                               $firstImage = $thumbs[0] ?? 'default.jpg';
-                            @endphp
-                            <a href="#"><img width="100px" height="100px" src="{{asset($firstImage)}}" alt=""></a>
-                            <div class="desc">
-                                <a  href= "/san-pham/{{ $products->id }}-{{ Str::slug($products->name, '-') }}.html" class="title">{{$products -> name}}</a>
-                                <div class="price">
-                                    <h6>{{number_format($products->price_sale)}}</h6>
-                                    <h6 class="l-through">{{number_format($products->price)}}</h6>
+                        <div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+                            <div class="single-related-product d-flex">
+                                @php
+                                    $thumbs = explode(',', $products->thumb); // Lấy danh sách ảnh
+                                   $firstImage = $thumbs[0] ?? 'default.jpg';
+                                @endphp
+                                <a href="#"><img width="100px" height="100px" src="{{asset($firstImage)}}" alt=""></a>
+                                <div class="desc">
+                                    <a  href= "/san-pham/{{ $products->id }}-{{ Str::slug($products->name, '-') }}.html" class="title">{{$products -> name}}</a>
+                                    <div class="price">
+                                        <h6>{{number_format($products->price_sale)}}</h6>
+                                        <h6 class="l-through">{{number_format($products->price)}}</h6>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     @endforeach
                 </div>
             </div>

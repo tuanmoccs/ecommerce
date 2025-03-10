@@ -3,6 +3,7 @@
 namespace App\Http\Service\Product;
 
 use App\Models\Product;
+use App\Models\Review;
 
 class ProductService
 {
@@ -26,6 +27,13 @@ class ProductService
             ->where('id', '!=', $id)
             ->orderByDesc('id')
             ->limit(9)
+            ->get();
+    }
+    public function getReviews($productId)
+    {
+        return Review::where('product_id', $productId)
+            ->with('user')
+            ->orderByDesc('created_at')
             ->get();
     }
 }

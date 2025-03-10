@@ -14,10 +14,12 @@ class ProductController extends Controller
     public function index($id  ='', $slug = ''){
         $product = $this->productService->show($id);
         $productMore = $this->productService->more($id);
+        $reviews = $this->productService->getReviews($id);
         return view('product',[
             'tiltle'=>'Chi tiết sản phẩm',
             'product'=>$product,
             'productMore'=>$productMore,
+            'reviews'=> $reviews,
         ]);
     }
 }

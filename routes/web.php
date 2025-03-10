@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\OrderAdminController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Users\LoginController;
@@ -56,7 +57,6 @@ Route::middleware(['admin.auth'])->group(function () {
 });
 
 Route::get('/', [MainController::class, 'index'])->name('home');
-Route::get('products', [MainController::class, 'products'])->name('products');
 Route::get('contact', [MainController::class, 'contact']);
 Route::get('danh-muc/{id}-{slug}.html', [App\Http\Controllers\MenuController::class, 'index']);
 Route::get('san-pham/{id}-{slug}.html', [App\Http\Controllers\ProductController::class, 'index']);
@@ -64,6 +64,11 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\MainController::class, 'index'])->name('home');
 Route::middleware(['auth.cart'])->group(function () {
+    Route::prefix('products')->group(function () {
+        Route::get('/', [MainController::class, 'products'])->name('products');
+        Route::post('/{product}/review', [ReviewController::class, 'store'])->name('review.store');
+    });
+    Route::post('/review/store', [ReviewController::class, 'store'])->name('user.review.store');
     Route::post('add-cart', [CartController::class, 'index']);
     Route::get('carts', [App\Http\Controllers\CartController::class, 'show']);
     Route::post('update-cart', [CartController::class, 'update']);
