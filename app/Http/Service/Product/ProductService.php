@@ -18,7 +18,7 @@ class ProductService
             ->get() ?? collect();
     }
     public function show($id){
-        return Product::where('id', $id)->where('active', 1)->with('menu')->firstOrFail();
+        return Product::where('id', $id)->with('menu')->firstOrFail();
     }
     public function more($id)
     {
