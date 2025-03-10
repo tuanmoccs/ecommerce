@@ -27,6 +27,16 @@
 <!--================Cart Area =================-->
 <!-- FORM UPDATE GIỎ HÀNG -->
 <section class="cart_area">
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-error">
+            {{ session('error') }}
+        </div>
+    @endif
 <form class="container" method="post" action="/update-cart">
     @csrf
     <div class="cart_inner">

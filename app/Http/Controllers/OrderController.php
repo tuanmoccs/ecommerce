@@ -8,7 +8,8 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmationMail;
 class OrderController extends Controller
 {
     public function __construct(OrderUserService $orderUserService)
@@ -27,9 +28,6 @@ class OrderController extends Controller
 
         $cartItems = Cart::where('user_id', $user->id)->get();
 
-        if ($cartItems->isEmpty()) {
-            return redirect()->back()->with('error', 'Giỏ hàng trống!');
-        }
 
         $total = $cartItems->sum('total_price');
 
@@ -54,7 +52,7 @@ class OrderController extends Controller
         }
 
         Cart::where('user_id', $user->id)->delete();
-
+        //Mail::to($order->email)->send(new OrderConfirmationMail($order));
         return redirect()->route('cart')->with('success', 'Đặt hàng thành công!');
     }
     public function order(){
